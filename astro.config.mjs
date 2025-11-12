@@ -4,7 +4,7 @@ import starlightThemeRapide from 'starlight-theme-rapide'
 
 export default defineConfig({
   base: '/',
-  site: 'https://darealsenor.github.io/docs',
+  site: 'https://senor.github.io',
   integrations: [
     starlight({
       plugins: [starlightThemeRapide()],
