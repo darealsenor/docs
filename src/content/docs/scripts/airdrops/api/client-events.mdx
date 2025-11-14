@@ -1,0 +1,73 @@
+---
+title: Client Events
+description: Client-side events API for the Senor Airdrops script.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+# Client Events
+
+<Aside type="danger">
+These events should not be called from other resources - only listen to. Exception: `senor-airdrops:client:OpenMenu` can be triggered.
+</Aside>
+
+## New Drop
+
+Triggered when a new airdrop is created.
+
+```lua
+RegisterNetEvent('senor-airdrops:client:NewDrop', function(data)
+    -- data contains the new drop information
+end)
+```
+
+**Event Data:**
+- `data` (table) - New airdrop data table
+
+**Example:**
+```lua
+RegisterNetEvent('senor-airdrops:client:NewDrop', function(data)
+    print("New airdrop created: " .. data.id)
+end)
+```
+
+---
+
+## Removed Drop
+
+Triggered when an airdrop is removed.
+
+```lua
+RegisterNetEvent('senor-airdrops:client:RemovedDrop', function(dropId)
+    -- dropId is the ID of the removed drop
+end)
+```
+
+**Event Parameters:**
+- `dropId` (number | string) - The ID of the removed airdrop
+
+**Example:**
+```lua
+RegisterNetEvent('senor-airdrops:client:RemovedDrop', function(dropId)
+    print("Airdrop removed: " .. dropId)
+end)
+```
+
+---
+
+## Open Menu
+
+Trigger this event to open the airdrops panel for a player.
+
+```lua
+TriggerEvent('senor-airdrops:client:OpenMenu')
+```
+
+**Example:**
+```lua
+-- Open airdrops menu from another resource
+TriggerEvent('senor-airdrops:client:OpenMenu')
+```
+
+---
+

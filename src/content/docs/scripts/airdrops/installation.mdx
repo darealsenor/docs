@@ -1,0 +1,52 @@
+---
+title: Installation
+description: Installation guide for the Senor Airdrops script.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import { links } from '../../links.js';
+
+# Installation
+
+<Aside type="note">
+This resource must run after <a href={links.thirdParty.ox_lib}>ox_lib</a> and requires <a href={links.thirdParty.oxmysql}>oxmysql</a>.
+</Aside>
+
+## Prerequisites
+
+- <a href={links.thirdParty.ox_lib}>ox_lib</a>
+- <a href={links.thirdParty.oxmysql}>oxmysql</a>
+
+## File System should look like this
+
+```plaintext
+resources/
+  └── senor-airdrops/
+      ├── client/
+      ├── server/
+      ├── shared/
+      ├── bridge/
+      ├── web/
+      └── fxmanifest.lua
+```
+
+<Aside type="note">
+Keep the resource name as `senor-airdrops` or it will not work.
+</Aside>
+
+## Database Setup
+
+The SQL tables will auto-create, so you don't need to run any SQL files manually.
+
+## Start the Resource
+
+```cfg
+ensure senor-airdrops
+```
+
+## Verify Installation
+
+1. Start server
+2. Join in-game
+3. Use `/airdrops` command to open the panel
+4. Use the panel to view/create drops.

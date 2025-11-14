@@ -8,7 +8,8 @@ export const links = {
     id: '481772420194107402'
   },
   thirdParty: {
-    ox_lib: 'https://github.com/communityox/ox_lib'
+    ox_lib: 'https://github.com/communityox/ox_lib',
+    oxmysql: 'https://github.com/CommunityOx/oxmysql'
   }
 };
 

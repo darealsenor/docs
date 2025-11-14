@@ -1,0 +1,265 @@
+---
+title: Configuration
+description: Complete configuration guide for the Senor Airdrops script.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Here are the available config files for the senor-airdrops script. Let me know if you need more stuff to be configured.
+
+<Tabs>
+<TabItem label="shared/config.lua">
+
+```lua
+lib.locale()
+
+Config = {}
+
+Config.DropModel = `v_club_roc_mixer1`
+
+Config.Defaults = {
+    Distance = 300.0,
+    LockTime = 10,
+    Interaction = "Keystroke",
+    Settings = {
+        -- ['Firstperson'] = 'First-person Only',
+        -- ['SemiDamage'] = 'Semi Damage',
+    },
+    FallbackLocation = vector3(279.54, -1937.58, 25.21)
+}
+
+Config.Customization = {
+    Particle = {
+        asset = 'core',
+        effectName = "exp_grd_flare",
+        alpha = 0.8,
+        scale = 0.75,
+        zOffset = 0.5,
+        rotation = { x = 0.0, y = 0.0, z = 0.0 },
+        color = { r = 125.0, g = 40.0, b = 220.0 }
+    },
+    Blip = {
+        color = 2,
+        sprite = 90,
+        scale = 0.8,
+        shortRange = true,
+        name = locale('blip_name'),
+        Sprites = {
+            Regular = 90,
+            Pistols = 156
+        }
+    },
+    Radius = {
+        color = 2,
+        alpha = 100,
+        name = locale('blip_name'),
+        offset = 0.0
+    }
+}
+
+Config.BlipColorChanges = {
+    WarningTime = 240,
+    WarningColor = 44,
+    CriticalTime = 60,
+    CriticalColor = 6
+}
+
+Config.Commands = {
+    Main = 'airdrops',
+    Drops = 'createdrop',
+    DropsHelp = locale('command_drops_help')
+}
+
+Config.Interaction = {
+    MaxDistance = 5.0,
+    KeystrokeDistance = 3.0,
+    KeystrokeControl = 49,
+    KeystrokeKey = 'F'
+}
+
+Config.Settings = {
+    FirstPerson = {
+        UpdateInterval = 300,
+        ViewMode = 4
+    },
+    SemiDamage = {
+        FullDamage = 1.0,
+        HalfDamage = 0.5
+    }
+}
+
+Config.VehicleLimiter = {
+    Enabled = false,
+    CheckInterval = 1000,
+    WarningTime = 240,
+    CriticalTime = 60,
+    DamageAmount = 10,
+    DisableEngineOnCritical = true
+}
+
+Config.PrizeReduction = {
+    Enabled = true,
+    MinPlayers = 20,
+    MinAmount = 2,
+    Divisor = 3
+}
+```
+
+**Configuration Options:**
+- `DropModel` - The prop model used for airdrops (keep the ticks ``)
+- `Defaults` - Default settings for new drops
+  - `Distance` - Default distance radius in meters
+  - `LockTime` - Default lock time in minutes before players can interact
+  - `Interaction` - Default interaction type: `"Keystroke"` or `"Interaction"`
+  - `Settings` - Additional drop settings (uncomment to enable)
+  - `FallbackLocation` - Fallback coordinates if no locations are available
+- `Customization` - Visual customization options
+  - `Particle` - Particle effect configuration (flare effect)
+  - `Blip` - Map blip configuration (sprite, color, scale)
+  - `Radius` - Radius blip configuration (shows drop area)
+- `BlipColorChanges` - Blip color changes based on time remaining
+  - `WarningTime` - Time in seconds before warning color
+  - `WarningColor` - Warning color ID
+  - `CriticalTime` - Time in seconds before critical color
+  - `CriticalColor` - Critical color ID
+- `Commands` - Command configuration
+  - `Main` - Main command to open panel (`/airdrops`)
+  - `Drops` - Command to create drops (`/createdrop`)
+  - `DropsHelp` - Help text for command
+- `Interaction` - Interaction settings
+  - `MaxDistance` - Maximum distance to interact with drop
+  - `KeystrokeDistance` - Distance for keystroke interaction
+  - `KeystrokeControl` - Control ID for keystroke (49 = F key)
+  - `KeystrokeKey` - Display name for the key
+- `Settings` - Additional feature settings
+  - `FirstPerson` - First-person only view settings
+  - `SemiDamage` - Semi-damage mode settings
+- `VehicleLimiter` - Prevents vehicles near drops (optional feature)
+  - `Enabled` - Enable vehicle limiter
+  - `CheckInterval` - How often to check for vehicles (milliseconds)
+  - `WarningTime` - Time before warning
+  - `CriticalTime` - Time before critical action
+  - `DamageAmount` - Damage dealt to vehicles
+  - `DisableEngineOnCritical` - Disable engine when critical
+- `PrizeReduction` - Reduces prizes when low player count (prevents farming)
+  - `Enabled` - Enable prize reduction
+  - `MinPlayers` - Minimum players online for full prizes
+  - `MinAmount` - Minimum item amount to skip reduction
+  - `Divisor` - Divide prize amounts by this when below MinPlayers
+
+</TabItem>
+
+<TabItem label="shared/pickup.lua">
+
+```lua
+return {
+    ---@alias Pickup 'Keystroke' | 'Interaction'
+    uiLabels = {
+        ['Keystroke'] = 'Keystroke (Press Key)',
+        ['Interaction'] = 'Eye Target',
+    }
+}
+```
+
+**Configuration Options:**
+- `uiLabels` - UI labels for pickup interaction types
+  - `Keystroke` - Press key to interact
+  - `Interaction` - Eye target interaction
+
+</TabItem>
+
+<TabItem label="shared/weapons.lua">
+
+```lua
+return {
+    ---@alias AirdropWeapons 'Regular' | 'Pistols' | 'Melee'
+    uiLabels = {
+        ['Melee'] = 'Melee Only',
+        ['Pistols'] = 'Pistols Only',
+        ['Regular'] = 'Regular (No Restrictions)',
+    },
+
+    weaponHashes = {
+        ['Regular'] = nil,
+        ['Pistols'] = {
+            [GetHashKey('WEAPON_PISTOL50')] = true,
+            [GetHashKey('WEAPON_COMBAT_PISTOL')] = true,
+            -- ... more pistol weapon hashes
+        },
+        ['Melee'] = {
+            [GetHashKey("WEAPON_KNIFE")] = true,
+            [GetHashKey("WEAPON_KATANA")] = true,
+            -- ... more melee weapon hashes
+        }
+    }
+}
+```
+
+**Configuration Options:**
+- `uiLabels` - UI labels for weapon restriction types
+  - `Regular` - No weapon restrictions
+  - `Pistols` - Only pistols allowed
+  - `Melee` - Only melee weapons allowed
+- `weaponHashes` - Weapon hash tables for each restriction type
+  - Add weapon hashes to restrict what weapons players can use near the drop
+
+</TabItem>
+
+<TabItem label="shared/settings.lua">
+
+```lua
+return {
+    ---@alias AirdropSettings 'Firstperson' | 'SemiDamage'
+    uiLabels = {
+        ['Firstperson'] = 'First-person Only',
+        ['SemiDamage'] = 'Semi Damage',
+    }
+}
+```
+
+**Configuration Options:**
+- `uiLabels` - UI labels for drop settings
+  - `Firstperson` - Force first-person view only
+  - `SemiDamage` - Reduce damage to half
+
+</TabItem>
+
+<TabItem label="shared/types.lua">
+
+```lua
+---@class Airdrop
+---@field id string
+---@field playerId number
+---@field coords vector3
+---@field distance number
+---@field lockTime number
+---@field interaction Pickup
+---@field weapons AirdropWeapons
+---@field settings AirdropSettings
+---@field prizes? Prize[]
+---@field dropState number
+---@field startTimer number
+---@field timeLeft number
+---@field startTime number
+
+---@class Prize
+---@field id? number
+---@field name string
+---@field amount string
+```
+
+**Configuration Options:**
+- Type definitions for the script (used for type checking and autocomplete)
+- `Airdrop` - Main airdrop data structure
+- `Prize` - Prize data structure
+- Additional type definitions for points, coordinates, and NUI retvals
+
+</TabItem>
+</Tabs>
+
+## Commands
+
+- `/airdrops` - Open the airdrops panel (accessible to all players, admin views for admins)
+- `/createdrop [time] optional:[useCurrentCoords] optional:[distance] optional:[pistols]` - Create a drop manually
+
+

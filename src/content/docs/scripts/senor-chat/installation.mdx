@@ -1,0 +1,64 @@
+---
+title: Installation
+description: Installation guide for the Senor Chat script.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import { links } from '../../links.js';
+
+# Installation
+
+<Aside type="note">
+This resource must run after <a href={links.thirdParty.ox_lib}>ox_lib</a> and requires <a href={links.thirdParty.oxmysql}>oxmysql</a>.
+</Aside>
+
+## Prerequisites
+
+- <a href={links.thirdParty.ox_lib}>ox_lib</a>
+- <a href={links.thirdParty.oxmysql}>oxmysql</a>
+
+## File System should look like this
+
+```plaintext
+resources/
+  └── senor-chat/
+      ├── client/
+      ├── server/
+      ├── config/
+      ├── bridge/
+      ├── web/
+      └── fxmanifest.lua
+```
+
+<Aside type="note">
+Keep the resource name as `senor-chat` or it will not work.
+</Aside>
+
+## Server Configuration
+
+Add the following ACE permissions to your `server.cfg` file. These are required for the chat script to manage permissions dynamically.
+
+```cfg
+add_ace resource.senor-chat command.add_ace allow
+add_ace resource.senor-chat command.remove_ace allow
+add_ace resource.senor-chat command.add_principal allow
+add_ace resource.senor-chat command.remove_principal allow
+```
+
+<Aside type="note">
+These ACE permissions only take effect on server restart. Make sure to restart your server after adding them.
+</Aside>
+
+## Start the Resource
+
+```cfg
+ensure senor-chat
+```
+
+## Verify Installation
+
+1. Start server
+2. Join in-game
+3. Chat should appear automatically
+4. Test sending messages in different channels
+

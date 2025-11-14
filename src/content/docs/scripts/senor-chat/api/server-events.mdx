@@ -1,0 +1,129 @@
+---
+title: Server Events
+description: Server-side events API for the Senor Chat script.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+# Server Events
+
+<Aside type="danger">
+These events should not be called from other resources - only listen to. Exception: compatibility events can be triggered.
+</Aside>
+
+## Compatibility Events
+
+These events are provided for compatibility with other chat systems and can be triggered by other resources.
+
+### chat:addMessage
+
+Legacy event for adding messages (compatibility mode).
+
+```lua
+TriggerServerEvent('chat:addMessage', msg)
+```
+
+**Event Parameters:**
+- `msg` (table) - Message data table
+
+**Message Data Structure:**
+```lua
+{
+    args = table, -- Array of message parts
+    color = table -- RGB color array { r, g, b }
+}
+```
+
+**Example:**
+```lua
+TriggerServerEvent('chat:addMessage', {
+    args = { "Hello", "world" },
+    color = { 255, 255, 255 }
+})
+```
+
+---
+
+### chat:addSuggestion
+
+Legacy event for adding command suggestions.
+
+```lua
+TriggerClientEvent('chat:addSuggestion', playerId, {
+    name = string,
+    help = string,
+    params = table
+})
+```
+
+**Event Parameters:**
+- `playerId` (number) - Target player ID
+- `data` (table) - Suggestion data table
+
+**Suggestion Data Structure:**
+```lua
+{
+    name = string, -- Command name (with or without '/')
+    help = string, -- Help text
+    params = table -- Array of parameter objects
+}
+```
+
+**Parameter Structure:**
+```lua
+{
+    name = string, -- Parameter name
+    help = string -- Parameter help text
+}
+```
+
+**Example:**
+```lua
+TriggerClientEvent('chat:addSuggestion', source, {
+    name = "/test",
+    help = "Test command",
+    params = {
+        { name = "param1", help = "First parameter" }
+    }
+})
+```
+
+---
+
+### chat:addSuggestions
+
+Legacy event for adding multiple command suggestions.
+
+```lua
+TriggerClientEvent('chat:addSuggestions', playerId, suggestions)
+```
+
+**Event Parameters:**
+- `playerId` (number) - Target player ID
+- `suggestions` (table) - Array of suggestion objects
+
+**Example:**
+```lua
+local suggestions = {
+    { name = "/test1", help = "Test command 1" },
+    { name = "/test2", help = "Test command 2" }
+}
+TriggerClientEvent('chat:addSuggestions', source, suggestions)
+```
+
+---
+
+## Internal Events
+
+These events are used internally by the script and should not be triggered manually. They can be listened to for integration purposes.
+
+### Message Events
+
+The script handles various message-related events internally. These events are primarily for the script's own use, but you can listen to them if needed for advanced integrations.
+
+### Channel Events
+
+Channel-related events are managed internally and should not be triggered externally.
+
+---
+

@@ -1,0 +1,36 @@
+---
+title: Server Events
+description: Server-side events API for the Senor Airdrops script.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+# Server Events
+
+<Aside type="danger">
+These events should not be called from other resources - only listen to.
+</Aside>
+
+## Open Drop
+
+Triggered when a player opens/interacts with an airdrop.
+
+```lua
+RegisterNetEvent('senor-airdrops:server:Opendrop', function(dropId)
+    -- dropId is the ID of the drop being opened
+end)
+```
+
+**Event Parameters:**
+- `dropId` (number | string) - The ID of the airdrop being opened
+
+**Example:**
+```lua
+RegisterNetEvent('senor-airdrops:server:Opendrop', function(dropId)
+    local source = source
+    print("Player " .. source .. " opened airdrop: " .. dropId)
+end)
+```
+
+---
+

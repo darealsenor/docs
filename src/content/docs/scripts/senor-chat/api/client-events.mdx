@@ -1,0 +1,79 @@
+---
+title: Client Events
+description: Client-side events API for the Senor Chat script.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+# Client Events
+
+<Aside type="danger">
+These events should not be called from other resources - only listen to. Exception: compatibility events can be triggered.
+</Aside>
+
+## Compatibility Events
+
+These events are provided for compatibility with other chat systems and can be triggered by other resources.
+
+### chat:addSuggestion
+
+Legacy event for adding command suggestions.
+
+```lua
+RegisterNetEvent('chat:addSuggestion', function(data)
+    -- data contains the suggestion information
+end)
+```
+
+**Event Data:**
+```lua
+{
+    name = string,
+    help = string,
+    params = table
+}
+```
+
+**Example:**
+```lua
+RegisterNetEvent('chat:addSuggestion', function(data)
+    print("Command suggestion added: " .. data.name)
+end)
+```
+
+---
+
+### chat:addSuggestions
+
+Legacy event for adding multiple command suggestions.
+
+```lua
+RegisterNetEvent('chat:addSuggestions', function(suggestions)
+    -- suggestions is an array of suggestion objects
+end)
+```
+
+**Event Data:**
+- `suggestions` (table) - Array of suggestion objects
+
+**Example:**
+```lua
+RegisterNetEvent('chat:addSuggestions', function(suggestions)
+    for _, suggestion in ipairs(suggestions) do
+        print("Suggestion: " .. suggestion.name)
+    end
+end)
+```
+
+---
+
+## Internal Events
+
+These events are used internally by the script and should not be triggered manually. They can be listened to for integration purposes.
+
+### Message Events
+
+The script handles various message-related events internally. These events are primarily for the script's own use, but you can listen to them if needed for advanced integrations.
+
+---
+

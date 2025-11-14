@@ -1,0 +1,353 @@
+---
+title: Configuration
+description: Complete configuration guide for the Senor Chat script.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Here are the available config files for the senor-chat script. Let me know if you need more stuff to be configured.
+
+<Tabs>
+<TabItem label="config/general.lua">
+
+```lua
+Config = Config or {}
+
+Config.Compatibility = {
+    enabled = true,
+    consolePrints = true
+}
+```
+
+**Configuration Options:**
+- `enabled` - Enable compatibility mode for old chat exports/events
+- `consolePrints` - Show prints from client/server on F8/server console
+
+</TabItem>
+
+<TabItem label="config/channels.lua">
+
+```lua
+Config = Config or {}
+
+Config.Channels = {
+    default = {
+        { name = "Global", id = 0, timeout = 3, localeKey = "channel_global" },
+        { name = "Staff",  id = 1, timeout = 1, permission = "accessStaffChannel", localeKey = "channel_staff" },
+    },
+    enabled = true
+}
+```
+
+**Configuration Options:**
+- `default` - Array of default channels
+  - `name` - Channel display name
+  - `id` - Channel ID (unique number)
+  - `timeout` - Message timeout in seconds
+  - `localeKey` - Locale key for translations
+  - `permission` - Permission required to access (optional)
+
+</TabItem>
+
+<TabItem label="config/commands.lua">
+
+```lua
+Config = Config or {}
+
+Config.Commands = {
+    showInvalidCommandError = true,
+    ooc = {
+        enabled = true,
+        timeout = 5,
+        localeKey = "command_ooc",
+        helpLocaleKey = "command_help_ooc"
+    },
+    looc = {
+        enabled = true,
+        timeout = 3,
+        localeKey = "command_looc",
+        helpLocaleKey = "command_help_looc"
+    },
+    me = {
+        enabled = true,
+        timeout = 2,
+        localeKey = "command_me",
+        helpLocaleKey = "command_help_me"
+    },
+    ['do'] = {
+        enabled = true,
+        timeout = 2,
+        localeKey = "command_do",
+        helpLocaleKey = "command_help_do"
+    },
+    twt = {
+        enabled = true,
+        timeout = 5,
+        localeKey = "command_twt",
+        helpLocaleKey = "command_help_twt"
+    },
+    ad = {
+        enabled = true,
+        timeout = 10,
+        localeKey = "command_ad",
+        helpLocaleKey = "command_help_ad"
+    }
+}
+```
+
+**Configuration Options:**
+- `showInvalidCommandError` - Show error message for invalid commands
+- Each command has:
+  - `enabled` - Enable/disable the command
+  - `timeout` - Message timeout in seconds
+  - `localeKey` - Locale key for command name
+  - `helpLocaleKey` - Locale key for help text
+
+</TabItem>
+
+<TabItem label="config/moderation.lua">
+
+```lua
+Config = Config or {}
+
+Config.Blacklist = {
+    enabled = true,
+    action = "censor",
+    muteDuration = 3
+}
+
+Config.Mute = {
+    minTimeMinutes = 1,
+    maxTimeMinutes = 1440,
+    allowMuteAdmins = true,
+    adminsCanBeMuted = true,
+    reasons = {
+        { value = "Spam", localeKey = "mute_reason_spam" },
+        { value = "Toxic Behavior", localeKey = "mute_reason_toxic" },
+        { value = "Harassment", localeKey = "mute_reason_harassment" },
+        { value = "Advertising", localeKey = "mute_reason_advertising" },
+        { value = "Exploiting", localeKey = "mute_reason_exploiting" },
+        { value = "Other", localeKey = "mute_reason_other" },
+        { value = "Custom", localeKey = "mute_reason_custom" }
+    }
+}
+
+Config.Words = {
+    'example_word',
+    'another_word',
+}
+```
+
+**Configuration Options:**
+- `Blacklist` - Blacklist configuration
+  - `enabled` - Enable blacklist
+  - `action` - Action type: `"mute"` or `"censor"`
+  - `muteDuration` - Mute duration in minutes (only works with mute action)
+- `Mute` - Mute configuration
+  - `minTimeMinutes` - Minimum mute time in minutes
+  - `maxTimeMinutes` - Maximum mute time in minutes (1440 = 24 hours)
+  - `allowMuteAdmins` - Allow admins to mute players
+  - `adminsCanBeMuted` - Allow admins to be muted
+  - `reasons` - Array of mute reasons
+- `Words` - Array of blacklisted words (add your own)
+
+</TabItem>
+
+<TabItem label="config/permissions.lua">
+
+```lua
+Config = Config or {}
+
+Config.PermissionMap = {
+    ['group.admin'] = {
+        "admin",
+        "mutePlayer",
+        "unmutePlayer",
+        "deleteMessage",
+        "accessStaffChannel",
+        "viewMuteStatus",
+    },
+    ['identifier.discord:481772420194107402'] = {
+        "admin",
+        "mutePlayer",
+        "unmutePlayer",
+        "deleteMessage",
+        "accessStaffChannel",
+        "viewMuteStatus",
+    },
+}
+```
+
+**Configuration Options:**
+- `PermissionMap` - Map permissions to groups or identifiers
+  - Use `group.` prefix for framework groups (e.g., `group.admin`)
+  - Use `identifier.` prefix for specific players:
+    - `identifier.license:` - License identifier
+    - `identifier.discord:` - Discord ID
+    - `identifier.steam:` - Steam ID
+    - `identifier.ip:` - IP address
+  - Available permissions:
+    - `admin` - Full admin access
+    - `mutePlayer` - Mute players
+    - `unmutePlayer` - Unmute players
+    - `deleteMessage` - Delete messages
+    - `accessStaffChannel` - Access staff channel
+    - `viewMuteStatus` - View mute status
+
+</TabItem>
+
+<TabItem label="config/ui.lua">
+
+```lua
+Config = Config or {}
+Config.UI = Config.UI or {}
+
+Config.Presets = {
+    enabled = true,
+    default = "dm",
+    presets = {
+        dm = {
+            profilePictures = true,
+            emojis = true,
+            chatTags = true,
+            chatColors = true,
+            avatars = true,
+            channels = true,
+            channelsMode = "inline",
+            soundOnType = true,
+            showChatOnNewMessage = false,
+            hideAvatars = false,
+            chatLocation = "left-top",
+            chatSize = "medium",
+            defaultMainColor = 4,
+            lockdown = false,
+            maxCustomTags = 2,
+        },
+        rp = {
+            profilePictures = true,
+            emojis = false,
+            chatTags = true,
+            chatColors = false,
+            avatars = false,
+            channels = true,
+            channelsMode = "inline",
+            soundOnType = false,
+            showChatOnNewMessage = false,
+            hideAvatars = true,
+            chatLocation = "left-top",
+            chatSize = "medium",
+            defaultMainColor = 1,
+            lockdown = true,
+            maxCustomTags = 1,
+        },
+        minimal = {
+            profilePictures = false,
+            emojis = false,
+            chatTags = false,
+            chatColors = false,
+            avatars = false,
+            channels = false,
+            channelsMode = "outside",
+            soundOnType = false,
+            showChatOnNewMessage = false,
+            hideAvatars = true,
+            chatLocation = "left-top",
+            chatSize = "small",
+            defaultMainColor = 1,
+            lockdown = false,
+            maxCustomTags = 0,
+        }
+    }
+}
+
+Config.UI.ColorPalette = {
+    { color = "#228be6", name = "Blue", bgColor = "rgba(34, 139, 230, 0.1)", id = 1 },
+    { color = "#fd7e14", name = "Orange", bgColor = "rgba(253, 126, 20, 0.1)", id = 2 },
+    { color = "#e74c3c", name = "Red", bgColor = "rgba(231, 76, 60, 0.1)", id = 3 },
+    { color = "#2ecc71", name = "Green", bgColor = "rgba(46, 204, 113, 0.1)", id = 4 },
+    { color = "#9b59b6", name = "Purple", bgColor = "rgba(155, 89, 182, 0.1)", id = 5 },
+    { color = "#f1c40f", name = "Yellow", bgColor = "rgba(241, 196, 15, 0.1)", id = 6 },
+    { color = "#1abc9c", name = "Teal", bgColor = "rgba(26, 188, 156, 0.1)", id = 7 },
+    { color = "#e67e22", name = "Carrot", bgColor = "rgba(230, 126, 34, 0.1)", id = 8 },
+}
+
+Config.Avatar = {
+    Type = "Discord",
+    FallbackImage = "https://avatars.githubusercontent.com/u/71390173?v=4"
+}
+```
+
+**Configuration Options:**
+- `Presets` - UI preset configurations
+  - `enabled` - Enable presets
+  - `default` - Default preset (`dm`, `rp`, or `minimal`)
+  - `presets` - Available presets
+    - `chatLocation` - Chat position: `left-top`, `center-top`, `right-top`, `left-center`, `center-center`, `right-center`, `left-bottom`, `center-bottom`, `right-bottom`
+    - `chatSize` - Chat size: `small`, `medium`, `large`
+    - `channelsMode` - Channel display: `inline` or `outside`
+    - `defaultMainColor` - Default color ID (references ColorPalette)
+- `ColorPalette` - Available color options
+- `Avatar` - Avatar configuration
+  - `Type` - Avatar type: `"Discord"` or `"Steam"`
+  - `FallbackImage` - Fallback image URL
+
+</TabItem>
+
+<TabItem label="config/discord_config.lua">
+
+```lua
+ServerConfig = {}
+
+ServerConfig.Avatar = {
+    DiscordToken = "",
+    DiscordGuild = ""
+}
+```
+
+**Configuration Options:**
+- `DiscordToken` - Discord bot token (required for Discord avatars)
+- `DiscordGuild` - Discord guild/server ID (required for Discord avatars)
+
+**Note:** Only needed if you are using Discord avatars in `config/ui.lua`.
+
+</TabItem>
+
+<TabItem label="config/tags_colors.lua">
+
+```lua
+Config = Config or {}
+
+Config.Tags = {
+    {
+        id = 'example_id',
+        bgColor = 'rgba(255, 0, 0, 0.1)',
+        color = '#FF0000',
+        text = 'Owner',
+    },
+}
+
+Config.Colors = {
+    {
+        id = 'example_id',
+        name = 'Custom Color',
+        color = '#FF0000',
+        bgColor = 'rgba(255, 0, 0, 0.1)',
+    },
+}
+```
+
+**Configuration Options:**
+- `Tags` - Array of custom tags
+  - `id` - Tag identifier (usually Discord role ID)
+  - `bgColor` - Background color (RGBA format)
+  - `color` - Text color (HEX format)
+  - `text` - Tag display text
+- `Colors` - Array of custom colors
+  - `id` - Color identifier
+  - `name` - Color display name
+  - `color` - Color value (HEX format)
+  - `bgColor` - Background color (RGBA format)
+
+</TabItem>
+</Tabs>
+

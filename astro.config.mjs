@@ -19,9 +19,25 @@ export default defineConfig({
           label: 'Scripts',
           items: [
             { label: 'Home', slug: '' },
-            { label: 'Airdrops', slug: 'scripts/airdrops' },
             {
-              label: 'Squads',
+              label: 'Senor Airdrops',
+              items: [
+                { label: 'Overview', slug: 'scripts/airdrops' },
+                { label: 'Installation', slug: 'scripts/airdrops/installation' },
+                { label: 'Configuration', slug: 'scripts/airdrops/configuration' },
+                {
+                  label: 'API Reference',
+                  items: [
+                    { label: 'Client Exports', slug: 'scripts/airdrops/api/client-exports' },
+                    { label: 'Server Exports', slug: 'scripts/airdrops/api/server-exports' },
+                    { label: 'Client Events', slug: 'scripts/airdrops/api/client-events' },
+                    { label: 'Server Events', slug: 'scripts/airdrops/api/server-events' },
+                  ],
+                },
+              ],
+            },
+            {
+              label: 'Senor Squads',
               items: [
                 { label: 'Overview', slug: 'scripts/squads' },
                 { label: 'Installation', slug: 'scripts/squads/installation' },
@@ -37,7 +53,23 @@ export default defineConfig({
                 },
               ],
             },
-            { label: 'Chat', slug: 'scripts/chat' },
+            {
+              label: 'Senor Chat',
+              items: [
+                { label: 'Overview', slug: 'scripts/chat' },
+                { label: 'Installation', slug: 'scripts/senor-chat/installation' },
+                { label: 'Configuration', slug: 'scripts/senor-chat/configuration' },
+                {
+                  label: 'API Reference',
+                  items: [
+                    { label: 'Client Exports', slug: 'scripts/senor-chat/api/client-exports' },
+                    { label: 'Server Exports', slug: 'scripts/senor-chat/api/server-exports' },
+                    { label: 'Client Events', slug: 'scripts/senor-chat/api/client-events' },
+                    { label: 'Server Events', slug: 'scripts/senor-chat/api/server-events' },
+                  ],
+                },
+              ],
+            },
           ],
         },
       ],
