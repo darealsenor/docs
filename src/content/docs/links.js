@@ -10,6 +10,20 @@ export const links = {
   thirdParty: {
     ox_lib: 'https://github.com/communityox/ox_lib',
     oxmysql: 'https://github.com/CommunityOx/oxmysql'
+  },
+  airdrops: {
+    tebexOpensource: 'https://senor-scripts.tebex.io/package/7125758',
+    youtubePreview: 'https://www.youtube.com/watch?v=YJH0LaCjgws'
+  },
+  chat: {
+    tebexOpensource: 'https://senor-scripts.tebex.io/package/7125774',
+    tebexEscrow: 'https://senor-scripts.tebex.io/package/7125786',
+    youtubePreview: 'https://www.youtube.com/watch?v=VyfCBnJjxO4'
+  },
+  squads: {
+    tebexEscrow: 'https://senor-scripts.tebex.io/package/7125788',
+    tebexOpensource: 'https://senor-scripts.tebex.io/package/7125785',
+    youtubeVideo: 'https://www.youtube.com/watch?v=YJH0LaCjgws'
   }
 };
 
