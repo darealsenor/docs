@@ -34,14 +34,14 @@ export const links = {
     cfxThread: 'https://forum.cfx.re/t/senor-advanced-squad-system-for-fivem-escrow-opensource/5388230'
   },
   redzones: {
-    tebexEscrow: '[link placeholder]',
-    tebexOpensource: '[link placeholder]',
-    youtubePreview: '[link placeholder]'
+    tebexEscrow: 'https://senor-scripts.tebex.io/package/7293034',
+    tebexOpensource: 'https://senor-scripts.tebex.io/package/7322180',
+    youtubePreview: 'https://www.youtube.com/watch?v=DTS_m2Fobj8'
   },
   topplayers: {
-    tebexEscrow: '[link placeholder]',
-    tebexOpensource: '[link placeholder]',
-    youtubePreview: '[link placeholder]'
+    tebexEscrow: 'https://senor-scripts.tebex.io/package/7322211',
+    tebexOpensource: 'https://senor-scripts.tebex.io/package/7322212',
+    youtubePreview: 'https://www.youtube.com/watch?v=oMaTN9444sE'
   }
 };
 
