@@ -1,0 +1,107 @@
+---
+title: Server Events
+description: Server-side events for the Senor Redzones script.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+# Server Events
+
+<Aside type="danger">
+These events are triggered internally by the script. Do not trigger them from other resources — only listen to them.
+</Aside>
+
+## Player Entered
+
+Triggered when a player enters a redzone
+
+```lua
+RegisterNetEvent('redzone:server:playerEntered', function(zoneId)
+    -- player entered the zone
+end)
+```
+
+**Event Parameters:**
+- `zoneId` (string | number) - The ID of the zone the player entered
+
+**Example:**
+```lua
+RegisterNetEvent('redzone:server:playerEntered', function(zoneId)
+    local source = source
+    print(GetPlayerName(source) .. " entered zone " .. tostring(zoneId))
+end)
+```
+
+---
+
+## Player Exited
+
+Triggered when a player leaves a redzone
+
+```lua
+RegisterNetEvent('redzone:server:playerExited', function(zoneId)
+    -- player left the zone
+end)
+```
+
+**Event Parameters:**
+- `zoneId` (string | number) - The ID of the zone the player exited
+
+**Example:**
+```lua
+RegisterNetEvent('redzone:server:playerExited', function(zoneId)
+    local source = source
+    print(GetPlayerName(source) .. " left zone " .. tostring(zoneId))
+end)
+```
+
+---
+
+## Player Died
+
+Triggered when a player dies inside a redzone
+
+```lua
+RegisterNetEvent('redzone:server:playerDied', function(zoneId, killerId)
+    -- player died
+end)
+```
+
+**Event Parameters:**
+- `zoneId` (string | number) - The ID of the zone where the death occurred
+- `killerId` (number | nil) - Server ID of the killer, or `nil` if it was a suicide/environmental death
+
+**Example:**
+```lua
+RegisterNetEvent('redzone:server:playerDied', function(zoneId, killerId)
+    local victim = source
+    if killerId then
+        print(GetPlayerName(killerId) .. " killed " .. GetPlayerName(victim))
+    end
+end)
+```
+
+---
+
+## Player Revived
+
+Triggered when a player is revived inside a redzone
+
+```lua
+RegisterNetEvent('redzone:server:playerRevived', function(zoneId)
+    -- player was revived
+end)
+```
+
+**Event Parameters:**
+- `zoneId` (string | number) - The ID of the zone where the revive occurred
+
+**Example:**
+```lua
+RegisterNetEvent('redzone:server:playerRevived', function(zoneId)
+    local source = source
+    print(GetPlayerName(source) .. " was revived in zone " .. tostring(zoneId))
+end)
+```
+
+---

@@ -1,0 +1,137 @@
+---
+title: Configuration
+description: Complete configuration guide for the Senor Redzones script.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Here are the available config files for the senor_redzones script. Let me know if you need more stuff to be configured.
+
+<Tabs>
+<TabItem label="config/shared.lua">
+
+```lua
+Config = {}
+
+Config.Admin = {
+    qb = { permissions = { 'qbcore.god', 'admin' } },
+    esx = { groups = { 'admin', 'superadmin', 'mod' }, permissions = { 'admin', 'superadmin' } },
+    ox = { permissions = { 'admin', 'superadmin' } },
+    qbx = { permissions = { 'qbcore.god', 'admin' } },
+    default = { permissions = { 'admin', 'command' } },
+}
+```
+
+**Configuration Options:**
+- `Admin` - Framework-specific admin permission groups
+  - `qb` - QBCore permission levels
+  - `esx` - ESX groups and permissions
+  - `ox` - OX Core permissions
+  - `qbx` - QBX permissions
+  - `default` - Standalone fallback permissions
+
+</TabItem>
+
+<TabItem label="config/client.lua">
+
+```lua
+Config.blipColour = 1
+Config.blipAlpha = 180
+Config.blipSprite = 161
+Config.blipScale = 0.8
+Config.blipDisplay = 4
+
+Config.markerColour = { 255, 42, 24, 120 }
+Config.markerType = 28
+Config.markersDrawDistance = 150.0
+
+Config.placementMarkerType = 1
+Config.placementMarkerColour = { 50, 205, 50, 180 }
+
+Config.hudPosition = 'top-right'
+
+Config.defaultZoneRadius = 250
+Config.defaultDurationKills = 30
+Config.defaultDurationTime = 300
+
+Config.scoreboardKey = 'B'
+
+Config.respawnDelayMs = 2000
+Config.spawnOccupiedRadius = 2.0
+```
+
+**Configuration Options:**
+- `blipColour` - Map blip color ID
+- `blipAlpha` - Map blip transparency (0–255)
+- `blipSprite` - Map blip sprite ID
+- `blipScale` - Map blip size
+- `blipDisplay` - Map blip display type
+- `markerColour` - Zone boundary marker color as `{ r, g, b, alpha }`
+- `markerType` - Zone boundary marker type ID
+- `markersDrawDistance` - Distance in meters at which markers become visible
+- `placementMarkerType` - Marker type shown during zone placement
+- `placementMarkerColour` - Placement marker color as `{ r, g, b, alpha }`
+- `hudPosition` - In-zone HUD position: `'top-right'`, `'top-left'`, `'bottom-right'`, `'bottom-left'`
+- `defaultZoneRadius` - Default radius in meters for new zones
+- `defaultDurationKills` - Default kill target for kill-based zones
+- `defaultDurationTime` - Default duration in seconds for time-based zones
+- `scoreboardKey` - Key to toggle the in-zone scoreboard (default `'B'`)
+- `respawnDelayMs` - Milliseconds to wait before respawning after death
+- `spawnOccupiedRadius` - Radius in meters to check if a spawn point is occupied
+
+</TabItem>
+
+<TabItem label="config/server.lua">
+
+```lua
+Config.loggingEnabled = false
+Config.discordWebhook = ''
+Config.minRadius = 10
+Config.maxRadius = 500
+Config.blipColour = 1
+Config.markerColour = { 255, 42, 24, 120 }
+```
+
+**Configuration Options:**
+- `loggingEnabled` - Enable Discord webhook logging for zone events
+- `discordWebhook` - Discord webhook URL for log messages (requires `loggingEnabled = true`)
+- `minRadius` - Minimum allowed zone radius in meters
+- `maxRadius` - Maximum allowed zone radius in meters
+- `blipColour` - Server-side default blip color (used when creating zones via exports)
+- `markerColour` - Server-side default marker color as `{ r, g, b, alpha }`
+
+</TabItem>
+
+<TabItem label="config/themes.lua">
+
+```lua
+ThemePresets = {
+    red    = { primary = '#fa5252', backgroundDark = '#221011' },
+    pink   = { primary = '#e64980', backgroundDark = '#1f0d14' },
+    grape  = { primary = '#be4bdb', backgroundDark = '#1a0d1f' },
+    violet = { primary = '#7950f2', backgroundDark = '#150d22' },
+    indigo = { primary = '#4c6ef5', backgroundDark = '#0d1222' },
+    blue   = { primary = '#228be6', backgroundDark = '#0d1522' },
+    cyan   = { primary = '#22b8cf', backgroundDark = '#0d1a1f' },
+    teal   = { primary = '#12b886', backgroundDark = '#0d1a17' },
+    green  = { primary = '#40c057', backgroundDark = '#0d1a10' },
+    lime   = { primary = '#82c91e', backgroundDark = '#151a0d' },
+    yellow = { primary = '#fab005', backgroundDark = '#221a0d' },
+    orange = { primary = '#fd7e14', backgroundDark = '#22120d' },
+    gray   = { primary = '#868e96', backgroundDark = '#1a1a1b' },
+}
+
+Config.theme = ThemePresets['green']
+```
+
+**Configuration Options:**
+- `ThemePresets` - Color presets based on [Open Color](https://open-color.io)
+  - Each preset has `primary` (accent color) and `backgroundDark` (UI background)
+- `Config.theme` - Active theme — set to any key from `ThemePresets` (e.g. `ThemePresets['red']`)
+
+</TabItem>
+</Tabs>
+
+## Commands
+
+- `/redzone` - Open the admin panel (admin only)

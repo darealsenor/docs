@@ -70,6 +70,43 @@ export default defineConfig({
                 },
               ],
             },
+            {
+              label: 'Senor Redzones',
+              items: [
+                { label: 'Overview', slug: 'scripts/redzones' },
+                { label: 'Installation', slug: 'scripts/redzones/installation' },
+                { label: 'Configuration', slug: 'scripts/redzones/configuration' },
+                {
+                  label: 'API Reference',
+                  items: [
+                    { label: 'Client Exports', slug: 'scripts/redzones/api/client-exports' },
+                    { label: 'Server Exports', slug: 'scripts/redzones/api/server-exports' },
+                    { label: 'Client Events', slug: 'scripts/redzones/api/client-events' },
+                    { label: 'Server Events', slug: 'scripts/redzones/api/server-events' },
+                  ],
+                },
+              ],
+            },
+            {
+              label: 'Senor Top Players',
+              items: [
+                { label: 'Overview', slug: 'scripts/topplayers' },
+                { label: 'Installation', slug: 'scripts/topplayers/installation' },
+                { label: 'Configuration', slug: 'scripts/topplayers/configuration' },
+                {
+                  label: 'API Reference',
+                  items: [
+                    { label: 'Server Exports', slug: 'scripts/topplayers/api/server-exports' },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
+          label: 'Tutorials',
+          items: [
+            { label: 'Change Locale', slug: 'tutorials/change-locale' },
           ],
         },
       ],

@@ -9,11 +9,18 @@ export const links = {
   },
   thirdParty: {
     ox_lib: 'https://github.com/communityox/ox_lib',
-    oxmysql: 'https://github.com/CommunityOx/oxmysql'
+    oxmysql: 'https://github.com/CommunityOx/oxmysql',
+    ox_inventory: 'https://github.com/communityox/ox_inventory',
+    qb_core: 'https://github.com/qbcore-framework/qb-core',
+    qbx_core: 'https://github.com/Qbox-project/qbx_core',
+    esx: 'https://github.com/esx-framework/esx_core',
+    ox_core: 'https://github.com/communityox/ox_core',
+    MugShotBase64: 'https://github.com/TomGrobbe/mug-shot-base64',
   },
   airdrops: {
     tebexOpensource: 'https://senor-scripts.tebex.io/package/7125758',
-    youtubePreview: 'https://www.youtube.com/watch?v=YJH0LaCjgws'
+    youtubePreview: 'https://www.youtube.com/watch?v=YJH0LaCjgws',
+    cfxThread: 'https://forum.cfx.re/t/senor-airdrops-advanced-airdrop-system-open-source/5388005/1'
   },
   chat: {
     tebexOpensource: 'https://senor-scripts.tebex.io/package/7125774',
@@ -23,9 +30,19 @@ export const links = {
   squads: {
     tebexEscrow: 'https://senor-scripts.tebex.io/package/7125788',
     tebexOpensource: 'https://senor-scripts.tebex.io/package/7125785',
-    youtubeVideo: 'https://www.youtube.com/watch?v=YJH0LaCjgws'
+    youtubeVideo: 'https://www.youtube.com/watch?v=YJH0LaCjgws',
+    cfxThread: 'https://forum.cfx.re/t/senor-advanced-squad-system-for-fivem-escrow-opensource/5388230'
+  },
+  redzones: {
+    tebexEscrow: '[link placeholder]',
+    tebexOpensource: '[link placeholder]',
+    youtubePreview: '[link placeholder]'
+  },
+  topplayers: {
+    tebexEscrow: '[link placeholder]',
+    tebexOpensource: '[link placeholder]',
+    youtubePreview: '[link placeholder]'
   }
 };
 
 export const discordUsername = 'senor.dev';
-

@@ -1,0 +1,58 @@
+---
+title: How to Change the Script Locale
+description: A guide on how to change the locale language for senor scripts using the ox_lib convar.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+All senor scripts use [ox_lib](https://github.com/communityox/ox_lib) for localization. The active locale is controlled by a single server convar — no file editing required.
+
+## How it works
+
+`ox_lib` loads locale files from the `locales/` folder inside each resource. The file to load is determined by the `ox:locale` convar set on the server.
+
+Available locale files are named by their language code, e.g. `en.json`, `fr.json`, `de.json`.
+
+## Setting the locale
+
+In your `server.cfg`, add the following convar **before** your `ensure` statements:
+
+```cfg
+setr ox:locale en
+```
+
+Replace `en` with the language code matching a file in the `locales/` folder of the script.
+
+<Aside type="note">
+Use `setr` (replicated convar) so the value is available on both the server and clients.
+</Aside>
+
+## Verify the locale loaded
+
+1. Start the server
+2. Check the console — ox_lib will print a warning if the locale file was not found
+3. In-game text (notifications, labels, commands help) should now appear in the selected language
+
+## Adding a custom locale
+
+If your language is not included, you can add it yourself:
+
+1. Copy `locales/en.json` from the script folder
+2. Rename it to your language code, e.g. `locales/pt.json`
+3. Translate all the values (keep the keys exactly as-is)
+4. Set `setr ox:locale pt` in `server.cfg`
+
+<Aside type="note">
+The `locales/` folder is listed in `escrow_ignore` in all senor scripts, so locale files are always open and editable.
+</Aside>
+
+## Example locale file structure
+
+```json
+{
+  "command_help": "Open the redzone admin panel",
+  "blip_name": "Red Zone"
+}
+```
+
+Each key maps directly to a `locale('key')` call in the Lua scripts.

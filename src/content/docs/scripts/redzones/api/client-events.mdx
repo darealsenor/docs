@@ -1,0 +1,115 @@
+---
+title: Client Events
+description: Client-side events for the Senor Redzones script.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+# Client Events
+
+<Aside type="danger">
+These events are triggered by the server to update the client. Do not trigger them from other resources — only listen to them.
+</Aside>
+
+## Add Zone
+
+Triggered when a new zone is created and should appear on the client
+
+```lua
+AddEventHandler('redzone:client:addZone', function(zoneData)
+    -- a new zone was added
+end)
+```
+
+**Event Data:**
+- `zoneData` (table) - Serialized zone object
+
+---
+
+## Update Zone
+
+Triggered when a zone's data changes
+
+```lua
+AddEventHandler('redzone:client:updateZone', function(zoneData)
+    -- zone was updated
+end)
+```
+
+**Event Data:**
+- `zoneData` (table) - Updated serialized zone object
+
+---
+
+## Remove Zone
+
+Triggered when a zone is removed
+
+```lua
+AddEventHandler('redzone:client:removeZone', function(zoneId)
+    -- zone was removed
+end)
+```
+
+**Event Data:**
+- `zoneId` (string | number) - ID of the removed zone
+
+---
+
+## Set Zones
+
+Triggered on resource start to sync all active zones to the client
+
+```lua
+AddEventHandler('redzone:client:setZones', function(zones)
+    -- initial zone sync
+end)
+```
+
+**Event Data:**
+- `zones` (table) - Array of all active serialized zone objects
+
+---
+
+## Leaderboard Update
+
+Triggered to update the in-zone leaderboard HUD
+
+```lua
+AddEventHandler('redzone:client:leaderboardUpdate', function(leaderboard)
+    -- leaderboard data updated
+end)
+```
+
+**Event Data:**
+- `leaderboard` (table) - Leaderboard payload
+  - `zoneId` (string | number)
+  - `players` (table) - Sorted array of `{ playerId, name, kills, deaths, streak }`
+  - `totalKills` (number)
+  - `durationType` (string | nil) - `'time'` or `'kills'`
+  - `duration` (number)
+  - `endTime` (number | nil) - Unix timestamp (only for `durationType = 'time'`)
+  - `currentPlayerId` (number)
+
+---
+
+## Zone End Results
+
+Triggered when a zone ends, showing final results to players still in the area
+
+```lua
+AddEventHandler('redzone:client:zoneEndResults', function(results)
+    -- zone ended
+end)
+```
+
+**Event Data:**
+- `results` (table) - End results payload
+  - `zoneId` (string | number)
+  - `zoneName` (string)
+  - `topPlayers` (table) - Top 10 players with `{ playerId, name, kills, deaths, streak }`
+  - `totalKills` (number)
+  - `duration` (number) - Total elapsed seconds
+
+---
+

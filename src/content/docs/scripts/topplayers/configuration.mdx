@@ -1,0 +1,150 @@
+---
+title: Configuration
+description: Complete configuration guide for the Senor Top Players script.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Here are the available config files for the senor-topplayers script. Let me know if you need more stuff to be configured.
+
+<Tabs>
+<TabItem label="config/config.lua">
+
+```lua
+Config = Config or {}
+
+Config.appTitle = 'Top Players'
+Config.theme = 'green'
+
+Config.defaultPodiumTextTemplate = '~w~[~y~#{{rank}}~w~] ~w~ - ~g~{{name}} ~w~ - ~r~{{category}} ~w~ - ~p~{{value}}'
+
+Config.commands = {
+    leaderboard = { name = 'topplayers' },
+    admin       = { name = 'topplayersadmin', restricted = 'group.admin' },
+    savestats   = { name = 'savestats', restricted = 'group.admin' },
+}
+
+Config.headshotsOnKillOnly = false
+
+Config.Admin = {
+    qb      = { permissions = { 'qbcore.god', 'admin' } },
+    esx     = { groups = { 'admin', 'superadmin', 'mod' }, permissions = { 'admin', 'superadmin' } },
+    ox      = { permissions = { 'admin', 'superadmin' } },
+    qbx     = { permissions = { 'qbcore.god', 'admin' } },
+    default = { permissions = { 'admin', 'command' } },
+}
+
+Config.cache = {
+    podiumTtlSec              = 120,
+    leaderboardTotalCountTtlSec = 60,
+    serverStatsTtlSec         = 60,
+}
+
+Config.combat = {
+    deathCooldownMs = 1500,
+}
+
+Config.leaderboard = {
+    defaultLimit = 25,
+    maxLimit     = 100,
+}
+
+Config.placement = {
+    rotateSpeed     = 1.5,
+    baseSpeed       = 0.06,
+    heightSpeed     = 0.02,
+    speedMultHigh   = 2.0,
+    speedMultLow    = 0.25,
+    raycastDistance = 15.0,
+}
+
+Config.propList = {
+    { model = 'rcnk_podium_01', label = 'Podium 01' },
+    { model = 'rcnk_podium_02', label = 'Podium 02' },
+    { model = 'rcnk_podium_03', label = 'Podium 03' },
+}
+
+Config.pedAnimations = {
+    { id = 'none',      label = 'None',         dict = '',                                                         anim = '',                             flag = 1 },
+    { id = 'idle',      label = 'Idle',          dict = 'anim@heists@heist_corona@team_idles@male_a',              anim = 'idle',                         flag = 1 },
+    { id = 'idle2',     label = 'Idle 2',        dict = 'anim@heists@heist_corona@team_idles@female_a',            anim = 'idle',                         flag = 1 },
+    { id = 'crossarms', label = 'Crossed arms',  dict = 'amb@world_human_hang_out_street@female_arms_crossed@idle_a', anim = 'idle_a',                    flag = 1 },
+    { id = 'phone',     label = 'Phone',         dict = 'cellphone@',                                              anim = 'cellphone_text_read_base',     flag = 1 },
+    { id = 'dance',     label = 'Dance',         dict = 'anim@amb@nightclub@mini@dance@dance_solo@male@var_a@',    anim = 'high_center',                  flag = 1 },
+    -- ... more animations available in the config file
+}
+```
+
+**Configuration Options:**
+- `appTitle` - UI window title shown in the leaderboard panel
+- `theme` - Color theme name (e.g. `'green'`, `'red'`, `'blue'`) — matched against ox_lib theme colors
+- `defaultPodiumTextTemplate` - GTA text format for the label shown above podium props. Supports `{{rank}}`, `{{name}}`, `{{category}}`, `{{value}}`
+- `commands` - In-game command names
+  - `leaderboard.name` - Command to open the leaderboard (`/topplayers`)
+  - `admin.name` - Command to open the admin panel (`/topplayersadmin`)
+  - `admin.restricted` - Permission required for admin command
+  - `savestats.name` - Command to force-save all cached stats (`/savestats`)
+  - `savestats.restricted` - Permission required for savestats command
+- `headshotsOnKillOnly` - If `true`, headshots only count when the hit also kills the target
+- `Admin` - Framework-specific admin permission groups (same structure as other senor scripts)
+- `cache` - Server-side cache TTLs in seconds
+  - `podiumTtlSec` - How long podium data is cached
+  - `leaderboardTotalCountTtlSec` - How long total leaderboard count is cached
+  - `serverStatsTtlSec` - How long server-wide stats are cached
+- `combat.deathCooldownMs` - Milliseconds to ignore repeated death events after a player dies (prevents double-counting)
+- `leaderboard` - Leaderboard query limits
+  - `defaultLimit` - Default number of entries shown per page
+  - `maxLimit` - Maximum entries allowed per request
+- `placement` - Admin prop/ped placement speeds
+  - `rotateSpeed` - Rotation speed multiplier
+  - `baseSpeed` - Base movement speed
+  - `heightSpeed` - Vertical movement speed
+  - `speedMultHigh` - Speed multiplier when holding sprint
+  - `speedMultLow` - Speed multiplier when holding crouch
+  - `raycastDistance` - Max raycast distance for surface snapping
+- `propList` - Available podium prop models for admin placement
+  - `model` - Prop model name (streamed from `stream/`)
+  - `label` - Display name in the admin UI
+- `pedAnimations` - Available NPC animations for podium peds
+  - `id` - Internal animation ID
+  - `label` - Display name in the admin UI
+  - `dict` - Animation dictionary
+  - `anim` - Animation name
+  - `flag` - Animation playback flag
+
+</TabItem>
+
+<TabItem label="config/avatar.lua">
+
+```lua
+AvatarConfig = {
+    type = 'mugshot',
+    discord = {
+        token = '',
+        guild = '',
+    },
+    mugshot = {
+        resource  = 'MugShotBase64',
+        callback  = 'senor_topplayers:avatar:getFromClient',
+    },
+}
+```
+
+**Configuration Options:**
+- `type` - Avatar source: `'mugshot'`, `'discord'`, or `'steam'`
+  - `'mugshot'` - Uses the [MugShotBase64](https://github.com/TomGrobbe/mug-shot-base64) resource to capture in-game character portraits
+  - `'discord'` - Fetches avatars from Discord using the bot token
+  - `'steam'` - Falls back to Steam profile pictures (no extra config needed)
+- `discord.token` - Discord bot token (required when `type = 'discord'`)
+- `discord.guild` - Discord guild/server ID (required when `type = 'discord'`)
+- `mugshot.resource` - Name of the MugShotBase64 resource (required when `type = 'mugshot'`)
+- `mugshot.callback` - NUI callback name used to retrieve the mugshot
+
+</TabItem>
+</Tabs>
+
+## Commands
+
+- `/topplayers` - Open the leaderboard panel (all players)
+- `/topplayersadmin` - Open the admin panel to manage podiums and peds (admin only)
+- `/savestats` - Force-save all cached player stats to the database (admin only)
