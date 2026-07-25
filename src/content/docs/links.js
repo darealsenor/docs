@@ -42,6 +42,11 @@ export const links = {
     tebexEscrow: 'https://senor-scripts.tebex.io/package/7322211',
     tebexOpensource: 'https://senor-scripts.tebex.io/package/7322212',
     youtubePreview: 'https://www.youtube.com/watch?v=oMaTN9444sE'
+  },
+  battlepass: {
+    tebexEscrow: 'https://senor-scripts.tebex.io/package/7579886',
+    tebexOpensource: 'https://senor-scripts.tebex.io/package/7579885',
+    youtubePreview: 'https://www.youtube.com/watch?v=0VUTOn_yBN0'
   }
 };
 
