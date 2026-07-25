@@ -1,0 +1,55 @@
+---
+title: Installation
+description: Installation guide for the Senor Battlepass script.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+import { links } from '../../links.js';
+
+# Installation
+
+<Aside type="note">
+This resource must run after <a href={links.thirdParty.ox_lib}>ox_lib</a> and requires <a href={links.thirdParty.oxmysql}>oxmysql</a>.
+</Aside>
+
+## Prerequisites
+
+- <a href={links.thirdParty.ox_lib}>ox_lib</a>
+- <a href={links.thirdParty.oxmysql}>oxmysql</a>
+
+## File System should look like this
+
+```plaintext
+resources/
+  └── senor_battlepass/
+      ├── client/
+      ├── server/
+      ├── bridge/
+      ├── config/
+      ├── locales/
+      ├── shared/
+      ├── web/
+      ├── custom_rewards.lua
+      └── fxmanifest.lua
+```
+
+<Aside type="note">
+Keep the resource name as `senor_battlepass` or it will not work.
+</Aside>
+
+## Database Setup
+
+The SQL table (`senor_battlepass`) will auto-create on first start, so you don't need to run any SQL files manually.
+
+## Start the Resource
+
+```cfg
+ensure senor_battlepass
+```
+
+## Verify Installation
+
+1. Start server
+2. Join in-game
+3. Use `/battlepass` (or press F7) to open the season pass panel
+4. Use `/battlepassadmin` to open the admin panel (admin only)

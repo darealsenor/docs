@@ -101,6 +101,20 @@ export default defineConfig({
                 },
               ],
             },
+            {
+              label: 'Senor Battlepass',
+              items: [
+                { label: 'Overview', slug: 'scripts/battlepass' },
+                { label: 'Installation', slug: 'scripts/battlepass/installation' },
+                { label: 'Configuration', slug: 'scripts/battlepass/configuration' },
+                {
+                  label: 'API Reference',
+                  items: [
+                    { label: 'Server Exports', slug: 'scripts/battlepass/api/server-exports' },
+                  ],
+                },
+              ],
+            },
           ],
         },
         {

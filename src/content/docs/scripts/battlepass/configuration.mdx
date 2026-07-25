@@ -1,0 +1,141 @@
+---
+title: Configuration
+description: Complete configuration guide for the Senor Battlepass script.
+---
+
+import { Tabs, TabItem } from '@astrojs/starlight/components';
+
+Here are the available config files for the senor_battlepass script. Let me know if you need more stuff to be configured.
+
+<Tabs>
+<TabItem label="config/shared.lua">
+
+```lua
+Config.Open = {
+    Command      = 'battlepass',      -- chat command that opens the UI (/battlepass)
+    AdminCommand = 'battlepassadmin', -- opens the admin panel (admins only)
+    Keybind      = 'F7',              -- default key; player-rebindable. '' disables the keybind
+}
+
+Config.Purchase = {
+    Type      = 'Money',                        -- 'Money' (deduct in-game funds) or 'Tebex' (verify a transaction id)
+    Amount    = 350,                            -- cost when Type = 'Money'
+    Account   = 'bank',                         -- which account 'Money' mode charges: 'bank' or 'cash'
+    TebexLink = 'https://your-store.tebex.io/', -- store URL shown to players in the Tebex flow
+}
+
+Config.Season = {
+    Id           = 1,  -- bump to start a new season (fresh per-season progress)
+    DurationDays = 30, -- season length; also the default premium duration
+}
+
+-- Reward preview images for entries with image = ''. %s = the reward's `name`.
+Config.Images = {
+    item  = 'nui://ox_inventory/web/images/%s.png',
+    car   = 'https://docs.fivem.net/vehicles/%s.webp',
+    money = 'nui://ox_inventory/web/images/money.png',
+}
+
+-- NUI accent color (hex). Options shipped with the theme:
+--   '#60D4FF' teal (default), '#94D82D' lime, '#9A60FF' purple, '#FFCD60' gold
+Config.Accent = '#60D4FF'
+```
+
+**Configuration Options:**
+- `Open.Command` - Chat command that opens the season pass panel
+- `Open.AdminCommand` - Chat command that opens the admin panel
+- `Open.Keybind` - Default rebindable key to open the panel (`''` disables it)
+- `Purchase.Type` - `'Money'` deducts in-game funds directly, `'Tebex'` verifies a Tebex transaction ID
+- `Purchase.Amount` - Premium price when `Type = 'Money'`
+- `Purchase.Account` - Account charged in `'Money'` mode: `'bank'` or `'cash'`
+- `Purchase.TebexLink` - Store URL shown to players in the Tebex purchase flow
+- `Season.Id` - Bump to start a fresh season (resets progress for everyone)
+- `Season.DurationDays` - Season length in days; also the default premium duration
+- `Images` - Fallback preview image URLs for rewards that don't set their own `image`
+- `Accent` - NUI accent color (hex)
+
+</TabItem>
+
+<TabItem label="config/server.lua">
+
+```lua
+ServerConfig = {}
+
+ServerConfig.TebexApiKey    = ''   -- X-Tebex-Secret; required when Config.Purchase.Type = 'Tebex'. Never sent to clients.
+ServerConfig.TebexPackageId = 0    -- Tebex package id that grants premium
+ServerConfig.RateLimitMs    = 500  -- minimum ms between claim/buy actions per player
+ServerConfig.VersionCheck   = true -- alerts you in console when a newer release is available
+
+-- Admin panel access, checked per framework by Bridge.framework.IsAdmin
+ServerConfig.Admin = {
+    qbx     = { permissions = { 'group.admin', 'qbcore.god', 'command.battlepassadmin' } },
+    qb      = { permissions = { 'group.admin', 'qbcore.god', 'command.battlepassadmin' } },
+    esx     = { groups = { 'admin', 'superadmin' }, permissions = { 'command.battlepassadmin' } },
+    default = { permissions = { 'group.admin', 'command.battlepassadmin' } },
+}
+
+-- Additionally required (on top of IsAdmin) for destructive resets
+ServerConfig.ResetAce = 'command.battlepassadmin'
+
+-- ESX only: esx_garage parking name that granted vehicles appear in
+ServerConfig.VehicleParking = 'VespucciBoulevard'
+
+-- Discord webhook logging. Blank `webhook` disables Discord entirely.
+ServerConfig.Logs = {
+    webhook   = '',
+    botName   = 'Battlepass',
+    botAvatar = '',
+    channels  = {
+        admin    = '', -- admin-panel actions
+        purchase = '', -- premium purchases
+        reward   = '', -- reward claims
+        progress = '', -- player level-ups
+        exploit  = '', -- blocked callbacks / permission failures
+    },
+    events = {
+        admin = true, purchase = true, reward = true, progress = true, exploit = true,
+    },
+}
+
+-- 'consume' missions only roll on inventories that report item use.
+-- Set true to roll them anyway and credit consume yourself via the export.
+ServerConfig.ForceConsumeMissions = false
+```
+
+**Configuration Options:**
+- `TebexApiKey` - X-Tebex-Secret, required when `Config.Purchase.Type = 'Tebex'`
+- `TebexPackageId` - The Tebex package ID that grants premium
+- `RateLimitMs` - Minimum milliseconds between claim/buy actions per player
+- `VersionCheck` - Alerts you in console when a newer release is available
+- `Admin` - Framework-specific admin permission groups (same structure as other senor scripts)
+- `ResetAce` - ACE permission additionally required for destructive resets (reset_claimed, reset_all, revoke_all_premium)
+- `VehicleParking` - ESX-only: `esx_garage` parking name for granted vehicles
+- `Logs` - Discord webhook + per-category on/off switches for admin/purchase/reward/progress/exploit events
+- `ForceConsumeMissions` - Roll `consume` missions even on inventories that can't report item use, crediting them yourself via the `AddProgress` export
+
+</TabItem>
+</Tabs>
+
+## Custom Reward Types
+
+`custom_rewards.lua` (loads after the built-in `money`/`item`/`car` handlers) lets you register your own reward types with `RegisterReward(typeName, handler)`:
+
+```lua
+-- Example: a 'cash_bonus' type paying the cash account (built-in 'money' pays bank)
+-- Usage in config/rewards.lua: { index = 11, type = 'cash_bonus', label = '$2,000 cash', amount = 2000 }
+RegisterReward('cash_bonus', function(src, citizenid, prize)
+    local ok = Bridge.framework.AddMoney(src, prize.amount or 0, 'cash', 'battlepass-cash-bonus')
+    return ok, ok and locale('reward_cash_ok', prize.amount or 0) or locale('reward_cash_failed')
+end)
+```
+
+A handler receives `(src, citizenid, prize)` — where `prize` is the matching entry from `config/rewards.lua` — and must return `ok:boolean, message:string`.
+
+## Other Config Files
+
+These are content/tuning files rather than settings, but worth knowing about:
+
+- `config/levels.lua` - XP required per level (30 levels by default)
+- `config/rewards.lua` - The free and premium reward tracks, one entry per level
+- `config/missions.lua` - Daily/weekly/monthly mission templates, counts, and durations
+- `config/activities.lua` - World-spawned activities (e.g. deliveries) that feed mission progress
