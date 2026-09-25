@@ -1,0 +1,36 @@
+---
+title: V2 Migration
+description: Upgrade from senor_topplayers v1 to senor_leaderboard v2 while keeping player statistics and existing displays.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+# V2 Migration
+
+V2 is named `senor_leaderboard`. Your existing player statistics remain in the `senor_topplayers_stats` table. On first start, v2 imports saved champion peds and podium props from the old tables into the new display system. It keeps the old tables for rollback. No manual SQL import is required.
+
+<Aside type="caution">
+Do not delete your database tables. Removing the old resource folder does not remove them, but starting v1 and v2 together can cause conflicting behavior.
+</Aside>
+
+## Upgrade
+
+1. Stop the server or stop `senor_topplayers`. Back up the old resource folder and its configuration, plus the `senor_topplayers_stats`, `senor_topplayers_peds`, and `senor_topplayers_props` database tables.
+2. Remove the old `senor_topplayers` resource folder and install v2 in a folder named exactly `senor_leaderboard`.
+3. Replace `ensure senor_topplayers` with `ensure senor_leaderboard` in `server.cfg`. Start `ox_lib` and `oxmysql` before it.
+4. Merge your customized settings into the **new** config files. Keep the new `Config.displays` settings; do not replace the v2 config files wholesale with v1 copies. Carry over any custom prop models in `Config.propList`, animation presets in `Config.pedAnimations`, permissions, commands, avatar settings, and other values you changed. If you use mugshot avatars, keep the v2 callback name `senor_leaderboard:avatar:getFromClient`.
+5. Update other resources that call `exports.senor_topplayers` or trigger/listen for `senor_topplayers:*` events. Those integrations need the new resource name and v2 event names. If you keep the old `/topplayers` or `/topplayersadmin` commands in your merged config, check that they do not conflict with another resource; v2 defaults to `/leaderboard` and `/leaderboardadmin`.
+6. Start v2. Open `/leaderboardadmin` and check the imported displays, including disabled ones. V1 peds and props import as separate displays, even when they stood together; combine them in the display editor if desired.
+7. Restart once more and confirm your player stats and imported display count remain present. Check disabled displays in the editor and verify that displays do not duplicate.
+
+## What moves automatically
+
+- Saved player stats and names are read from the existing stats table.
+- Saved peds and props are imported with their positions, labels, enabled states, pinned player or rank selection, custom text, and ped animation data.
+- Original v1 tables are retained. The v2 import records which rows it has processed so a restart does not duplicate displays.
+
+V2 display edits are stored in `senor_leaderboard_displays`; they are not written back to v1's ped and prop tables. If you roll back, restore the v1 resource and config. For an exact pre-upgrade rollback, restore the database backup too; that also discards any stats gained after the backup.
+
+<Aside type="note">
+The database import and restart behavior have automated MariaDB coverage. Check actual models, animations, card placement, and framework or appearance integrations in game before deploying to a production server.
+</Aside>
