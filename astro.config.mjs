@@ -24,6 +24,7 @@ export default defineConfig({
               items: [
                 { label: 'Overview', slug: 'scripts/airdrops' },
                 { label: 'Installation', slug: 'scripts/airdrops/installation' },
+                { label: 'V2 Migration', slug: 'scripts/airdrops/v2-migration' },
                 { label: 'Configuration', slug: 'scripts/airdrops/configuration' },
                 {
                   label: 'API Reference',

@@ -1,0 +1,34 @@
+---
+title: V2 Migration
+description: Upgrade Senor Airdrops while keeping saved locations, rewards, and settings.
+---
+
+import { Aside } from '@astrojs/starlight/components';
+
+# V2 Migration
+
+Keep the resource name `senor-airdrops`. V2 reads saved locations and prizes from the existing `airdrop_locations` and `airdrop_prizes` tables. The old prize list appears in Loot as **Default rewards** and is selected by default when creating a drop. Named Loot templates are new; you can create them separately. No manual SQL import is required.
+
+<Aside type="caution">
+Keep the existing database tables. Back up the database and resource before upgrading, and do not replace customized configuration or bridge files without merging your changes.
+</Aside>
+
+## Upgrade
+
+1. Stop `senor-airdrops`. Back up its resource folder and the `airdrop_locations`, `airdrop_prizes`, and, if present, `airdrop_settings` tables.
+2. Install the complete v2 resource in the same `senor-airdrops` folder. Replace its runtime files and the entire supplied `web/build` together; mixing old and new UI assets can break the admin panel. Include `web/dui` and the supplied local font files.
+3. Merge customized values from `shared/config.lua`, `bridge/config.lua`, bridge adapters, locales, and logging setup into v2. If you retain a v1 config without `Config.SettingsDefaults`, v2 translates supported v1 settings on its first start. If you use the new `Config.SettingsDefaults`, put your intended values there before first start; its values take precedence over legacy config fields. A saved `airdrop_settings` row takes precedence over either config.
+4. Keep `ensure senor-airdrops` in `server.cfg`. Start `ox_lib`, `oxmysql`, the framework, inventory, and target resources first. OneSync is required.
+5. Start v2 and open the admin panel. Check saved locations, **Loot → Default rewards**, and Settings. New named Loot templates begin empty. Review automatic drop timing and rewards before enabling drops for players.
+6. Restart once more and confirm the lists and settings remain the same.
+
+## What happens to existing data
+
+- Existing valid location and prize rows stay in their original tables. V2 does not append its sample locations to a server that already has locations.
+- The existing prize list remains editable as **Default rewards**. It is not copied into every named template. Selecting Default rewards for a new drop uses the current list; an active drop keeps the reward snapshot it received at creation.
+- If `airdrop_settings` exists, v2 loads the saved settings first and fills new fields from configuration defaults. On a v1 server without that table, v2 creates it and saves initial settings on first start.
+- Invalid saved location or prize rows are skipped and logged. They remain in the database for review.
+
+<Aside type="note">
+Active drops and winner history are held in memory and do not survive a resource restart. Custom Lua changes and external integrations are not migrated automatically. The migration paths have automated code tests, but check an upgraded copy of your own database and the UI in game before using v2 on a production server.
+</Aside>
