@@ -92,6 +92,7 @@ export default defineConfig({
               items: [
                 { label: 'Overview', slug: 'scripts/topplayers' },
                 { label: 'Installation', slug: 'scripts/topplayers/installation' },
+                { label: 'V2 Migration', slug: 'scripts/topplayers/v2-migration' },
                 { label: 'Configuration', slug: 'scripts/topplayers/configuration' },
                 {
                   label: 'API Reference',
